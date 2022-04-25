@@ -2,9 +2,6 @@
 TOAD 🐸 <img src="UNP.png" width="325px" align="right" />
 ===========
 ### AI-based Pathology Predicts Origins for Cancers of Unknown Primary 
-*Nature*
-
-[Read Link](https://t.co/HTkIdg55Lw?amp=1) | [Journal Link](https://dx.doi.org/10.1038/s41586-021-03512-4) | [Interactive Demo](http://toad.mahmoodlab.org) | [Cite](#reference)
 
 *TL;DR: In this work we propose to use weakly-supervised multi-task computational pathology to aid the differential diagnosis for cancers of unknown primary (CUP). CUPs represent 1-2% of all cancers and have poor prognosis because modern cancer treatment is specific to the primary. We present TOAD (Tumor Origin Assessment via Deep-learning) for predicting the primary origin of these tumors from H&E images without using immunohistochemistry, molecular testing or clinical correlation. Our model is trained on 22,833 gigapixel diagnostic whole slide images (WSIs) from 18 different primary cancer origins and tested on an held-out set of 6,499 (WSIs) and an external set of 682 WSIs from 200+ institutions. Furthermore, we curated a large multi-institutional dataset of 743 CUP cases originiating in 150+ different medical centers and validated our model against a subset of 317 cases for which a primary differential was assigned based on evidence from extensive IHC testing, radiologic and/or clinical correlation.*
 
@@ -16,9 +13,6 @@ TOAD 🐸 <img src="UNP.png" width="325px" align="right" />
 * Linux (Tested on Ubuntu 18.04)
 * NVIDIA GPU (Tested on Nvidia GeForce RTX 2080 Ti x 16)
 * Python (3.7.7), h5py (2.10.0), matplotlib (3.1.1), numpy (1.18.1), opencv-python (4.1.1), openslide-python (1.1.1), openslide (3.4.1), pandas (1.0.3), pillow (7.0.0), PyTorch (1.5.1), scikit-learn (0.22.1), scipy (1.3.1), tensorflow (1.14.0), tensorboardx (1.9), torchvision (0.6).
-
-### Installation Guide for Linux (using anaconda)
-[Installation Guide](https://github.com/mahmoodlab/CLAM/blob/master/docs/INSTALLATION.md)
 
 ### Data Preparation
 We chose to encode each tissue patch with a 1024-dim feature vector using a truncated, pretrained ResNet50. For each WSI, these features are expected to be saved as matrices of torch tensors of size N x 1024, where N is the number of patches from each WSI (varies from slide to slide). The following folder structure is assumed:
@@ -35,8 +29,6 @@ DATA_ROOT_DIR/
                 └── ...
 ```
 DATA_ROOT_DIR is the base directory of all datasets (e.g. the directory to your SSD). DATASET_DIR is the name of the folder containing data specific to one experiment and features from each slide is stored as .pt files.
-
-Please refer to refer to [CLAM](https://github.com/mahmoodlab/CLAM) for examples on how perform this feature extraction step.
 
 ### Datasets
 Datasets are expected to be prepared in a csv format containing at least 5 columns: **case_id**, **slide_id**, **sex**, and labels columns for the slide-level labels: **label**, **site**. Each **case_id** is a unique identifier for a patient, while the **slide_id** is a unique identifier for a slide that correspond to the name of an extracted feature .pt file. This is necessary because often one patient has multiple slides, which might also have different labels. When train/val/test splits are created, we also make sure that slides from the same patient do not go to different splits. The slide ids should be consistent with what was used during the feature extraction step. We provide a dummy example of a dataset csv file in the **dataset_csv** folder, named **dummy_dataset.csv**. You are free to input the labels for your data in any way as long as you specify the appropriate dictionary maps under the **label_dicts** argument of the dataset object's constructor (see below). For demonstration purposes, we used 'M' and 'F' for sex and 'Primary' and 'Metastatic' for the site. Our 18 classes of tumor origins are labaled by 'Lung', 'Breast', 'Colorectal', 'Ovarian', 'Pancreatobiliary', 'Adrenal', 'Skin', 'Prostate', 'Renal', 'Bladder', 'Esophagogastric',  'Thyroid', 'Head Neck',  'Glioma', 'Germ Cell', 'Endometrial', 'Cervix', and 'Liver'.
@@ -119,24 +111,3 @@ To test trained models on your own custom datasets, you can add them into **eval
 
 ## Issues
 - Please report all issues on the public forum.
-
-## License
-© [Mahmood Lab](http://www.mahmoodlab.org) - This code is made available under the GPLv3 License and is available for non-commercial academic purposes. 
-
-## Reference
-If you find our work useful in your research or if you use parts of this code please consider citing our paper:
-
-Lu, M.Y., Chen, T.Y., Williamson, D.F.K. et al. AI-based pathology predicts origins for cancers of unknown primary. Nature 594, 106–110 (2021). https://doi.org/10.1038/s41586-021-03512-4
-
-```
-@article{lu2021ai,
-  title={AI-based pathology predicts origins for cancers of unknown primary},
-  author={Lu, Ming Y and Chen, Tiffany Y and Williamson, Drew FK and Zhao, Melissa and Shady, Maha and Lipkova, Jana and Mahmood, Faisal},
-  journal={Nature},
-  volume={594},
-  number={7861},
-  pages={106--110},
-  year={2021},
-  publisher={Nature Publishing Group}
-}
-```
